@@ -16,7 +16,6 @@ packer_packages:
 
 {%- for image in pillar.packer.builder.images %}
 
-
 {%- endfor %}
 
 /usr/local/packer:
@@ -38,11 +37,17 @@ packer_unzip_package:
     - file: /usr/local/packer
     - cmd: packer_download_package
 
+{%- for binary in packer_binaries %}
+
 /usr/bin/packer:
   file.symlink:
   - target: /usr/local/packer/packer
   - require:
     - cmd: packer_unzip_package
+
+{%- endfor %}
+
+
 
 /usr/bin/packer-builder-openstack:
   file.symlink:
