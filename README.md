@@ -5,13 +5,22 @@ Packer is an open source tool for creating identical machine images for multiple
 
 ## Sample pillar
 
+### Basic linux distros
+
     packer:
       builder:
         enabled: true
-        version: 0.3.9
+        version: 0.3.10
+        builders:
+        - type: virtualbox
+        - type: vmware
+        - type: openstack
+        - type: aws
         images:
-        - name: somelinux
-          source: git@repo.domain.com:packer/ubuntu.git
+        - name: someos
+          source: git
+          address: 'git@repo.domain.com:packer/someos.git'
+          branch: 'master'
 
 ## Read more
 
