@@ -10,7 +10,7 @@
 {% set packer_version = '0.3.10' %}
 {% endif %}
 
-{% set packer_base_url 'https://dl.bintray.com/mitchellh/packer' %}
+{% set packer_base_url = 'https://dl.bintray.com/mitchellh/packer' %}
 
 {% set packer_base_file_fragments = [ packer_version, '_', kernel|lower, '_', os_arch, '.zip' ] %}
 {% set packer_base_file = ""|join(packer_base_file_fragments) %}
