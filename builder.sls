@@ -36,6 +36,7 @@ packer_packages:
 /srv/packer/templates:
   file:
   - directory
+  - mode: 0777
   - require:
     - file: /srv/packer
 
@@ -49,14 +50,16 @@ packer_packages:
 /srv/packer/virtualbox:
   file:
   - directory
+  - mode: 0777
   - require:
     - file: /srv/packer
 {% endif %}
 
-{% if pillar.vmware is defined %}
+{% if pillar.vmware_player is defined %}
 /srv/packer/vmware:
   file:
   - directory
+  - mode: 0777
   - require:
     - file: /srv/packer
 {% endif %}
