@@ -71,6 +71,8 @@ packer_packages:
   - rev: {{ image.branch }}
   - require:
     - file: /srv/packer/templates
+  - require_in:
+    - cmd: packer_templates_mode
 {%- endfor %}
 
 /usr/local/packer:
@@ -99,6 +101,10 @@ packer_unzip_package:
   - require:
     - cmd: packer_unzip_package
 {%- endfor %}
+
+packer_templates_mode:
+  cmd.run:
+  - name: chmod 0777 /srv/packer/templates -R
 
 {% elif kernel == "Windows" %}
 
