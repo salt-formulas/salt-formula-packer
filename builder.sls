@@ -33,15 +33,41 @@ packer_packages:
   file:
   - directory
 
-{%- for image in pillar.packer.builder.images %}
-
-{{ image.address }}:
-  git.latest:
-  - target: /srv/packer/{{ image.name }}
-  - rev: {{ image.branch }}
+/srv/packer/templates:
+  file:
+  - directory
   - require:
     - file: /srv/packer
 
+/srv/packer/iso:
+  file:
+  - directory
+  - require:
+    - file: /srv/packer
+
+{% if pillar.virtualbox is defined %}
+/srv/packer/virtualbox:
+  file:
+  - directory
+  - require:
+    - file: /srv/packer
+{% endif %}
+
+{% if pillar.vmware is defined %}
+/srv/packer/vmware:
+  file:
+  - directory
+  - require:
+    - file: /srv/packer
+{% endif %}
+
+{%- for image in pillar.packer.builder.images %}
+{{ image.address }}:
+  git.latest:
+  - target: /srv/packer/templates/{{ image.name }}
+  - rev: {{ image.branch }}
+  - require:
+    - file: /srv/packer/templates
 {%- endfor %}
 
 /usr/local/packer:
@@ -64,13 +90,11 @@ packer_unzip_package:
     - cmd: packer_download_package
 
 {%- for binary in packer_binaries %}
-
 /usr/bin/{{ binary }}:
   file.symlink:
   - target: /usr/local/packer/{{ binary }}
   - require:
     - cmd: packer_unzip_package
-
 {%- endfor %}
 
 {% elif kernel == "Windows" %}
