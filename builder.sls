@@ -17,10 +17,7 @@
 
 {% set packer_binaries = [ 'packer', 'packer-builder-digitalocean', 'packer-command-build', 'packer-post-processor-vagrant', 'packer-provisioner-puppet-masterless', 'packer-builder-amazon-chroot', 'packer-builder-openstack', 'packer-command-fix', 'packer-provisioner-ansible-local', 'packer-provisioner-salt-masterless', 'packer-builder-amazon-ebs', 'packer-builder-virtualbox', 'packer-command-inspect', 'packer-provisioner-chef-solo', 'packer-provisioner-shell', 'packer-builder-amazon-instance', 'packer-builder-vmware', 'packer-command-validate', 'packer-provisioner-file' ] %}
 
-{%- if pillar.packer.builder.enabled %}
-
-include:
-- packer.params
+{%- if pillar.packer.builder.enabled %
 
 {% if kernel == "Linux" %}
 
