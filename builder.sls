@@ -1,25 +1,20 @@
-{% set kernel = salt['grains.item']('kernel')['kernel'] %}
-
-{% set os = salt['grains.item']('os')['os'] %}
-
-{% set os_arch = salt['grains.item']('osarch')['osarch'] %}
 
 {% if pillar.packer.builder.version is defined %}
 {% set packer_version = pillar.packer.builder.version %}
 {% else %}
-{% set packer_version = '0.3.10' %}
+{% set packer_version = '0.5.2' %}
 {% endif %}
 
 {% set packer_base_url = 'https://dl.bintray.com/mitchellh/packer' %}
 
-{% set packer_base_file_fragments = [ packer_version, '_', kernel|lower, '_', os_arch, '.zip' ] %}
+{% set packer_base_file_fragments = [ packer_version, '_', grains.kernel|lower, '_', grains.osarch, '.zip' ] %}
 {% set packer_base_file = packer_base_file_fragments|join("") %}
 
 {% set packer_binaries = [ 'packer', 'packer-builder-digitalocean', 'packer-command-build', 'packer-post-processor-vagrant', 'packer-provisioner-puppet-masterless', 'packer-builder-amazon-chroot', 'packer-builder-openstack', 'packer-command-fix', 'packer-provisioner-ansible-local', 'packer-provisioner-salt-masterless', 'packer-builder-amazon-ebs', 'packer-builder-virtualbox', 'packer-command-inspect', 'packer-provisioner-chef-solo', 'packer-provisioner-shell', 'packer-builder-amazon-instance', 'packer-builder-vmware', 'packer-command-validate', 'packer-provisioner-file' ] %}
 
-{%- if pillar.packer.builder.enabled %
+{%- if pillar.packer.builder.enabled %}
 
-{% if kernel == "Linux" %}
+{% if grains.kernel == "Linux" %}
 
 packer_packages:
   pkg.installed:
@@ -27,35 +22,30 @@ packer_packages:
     - unzip
 
 /srv/packer:
-  file:
-  - directory
+  file.directory
 
 /srv/packer/templates:
-  file:
-  - directory
+  file.directory:
   - mode: 0777
   - require:
     - file: /srv/packer
 
 /srv/packer/iso:
-  file:
-  - directory
+  file.directory:
   - require:
     - file: /srv/packer
 
 {% if pillar.virtualbox is defined %}
 /srv/packer/virtualbox:
-  file:
-  - directory
+  file.directory:
   - mode: 0777
   - require:
     - file: /srv/packer
 {% endif %}
 
-{% if pillar.vmware_player is defined %}
+{% if pillar.vmware_workstation is defined %}
 /srv/packer/vmware:
-  file:
-  - directory
+  file.directory:
   - mode: 0777
   - require:
     - file: /srv/packer
@@ -73,8 +63,7 @@ packer_packages:
 {%- endfor %}
 
 /usr/local/packer:
-  file:
-  - directory
+  file.directory
 
 packer_download_package:
   cmd.run:
@@ -103,7 +92,7 @@ packer_templates_mode:
   cmd.run:
   - name: chmod 0777 /srv/packer/templates -R
 
-{% elif kernel == "Windows" %}
+{% elif grains.kernel == "Windows" %}
 
 packer_install_package:
   pkg.installed:
