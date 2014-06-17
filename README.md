@@ -11,11 +11,6 @@ Packer is an open source tool for creating identical machine images for multiple
       builder:
         enabled: true
         version: 0.3.10
-        builders:
-        - type: virtualbox
-        - type: vmware
-        - type: openstack
-        - type: aws
         images:
         - name: someos
           source: git

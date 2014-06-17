@@ -1,5 +1,5 @@
 
 include:
-{%- if pillar.packer.builder is defined %}
-- packer.builder
+{%- if pillar.packer.build is defined %}
+- packer.build
 {%- endif %}
