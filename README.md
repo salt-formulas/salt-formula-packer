@@ -11,11 +11,25 @@ Packer is an open source tool for creating identical machine images for multiple
       builder:
         enabled: true
         version: 0.3.10
-        images:
-        - name: someos
-          source: git
-          address: 'git@repo.domain.com:packer/someos.git'
-          branch: 'master'
+        template:
+          someos:
+            source: git
+            address: 'git@repo.domain.com:packer/someos.git'
+            branch: 'master'
+
+## Usage
+
+Build plain image
+
+    packer build ubuntu1404.json
+
+Build image with Salt provisioner
+
+    packer build -var 'provisioner=salt' ubuntu1404.json
+
+Build image with Puppet provisioner
+
+    packer build -var 'provisioner=puppet' ubuntu1404.json
 
 ## Read more
 
