@@ -1,11 +1,11 @@
 {%- set build = salt['grains.filter_by']({
     'Debian': {
-        'version': '0.6.0',
+        'version': '0.7.1',
         'binaries': [ 'packer', 'packer-builder-digitalocean', 'packer-command-build', 'packer-post-processor-vagrant', 'packer-provisioner-puppet-masterless', 'packer-builder-amazon-chroot', 'packer-builder-openstack', 'packer-command-fix', 'packer-provisioner-ansible-local', 'packer-provisioner-salt-masterless', 'packer-builder-amazon-ebs', 'packer-builder-virtualbox', 'packer-command-inspect', 'packer-provisioner-chef-solo', 'packer-provisioner-shell', 'packer-builder-amazon-instance', 'packer-builder-vmware', 'packer-command-validate', 'packer-provisioner-file' ],
         'source_url': 'https://dl.bintray.com/mitchellh/packer',
     },
     'RedHat': {
-        'version': '0.6.0',
+        'version': '0.7.1',
         'binaries': [ 'packer', 'packer-builder-digitalocean', 'packer-command-build', 'packer-post-processor-vagrant', 'packer-provisioner-puppet-masterless', 'packer-builder-amazon-chroot', 'packer-builder-openstack', 'packer-command-fix', 'packer-provisioner-ansible-local', 'packer-provisioner-salt-masterless', 'packer-builder-amazon-ebs', 'packer-builder-virtualbox', 'packer-command-inspect', 'packer-provisioner-chef-solo', 'packer-provisioner-shell', 'packer-builder-amazon-instance', 'packer-builder-vmware', 'packer-command-validate', 'packer-provisioner-file' ],
         'source_url': 'https://dl.bintray.com/mitchellh/packer',
     },
