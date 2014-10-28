@@ -55,7 +55,7 @@ packer_download_package:
 
 packer_unzip_package:
   cmd.run:
-  - name: unzip {{ source_file }} -d /usr/local/packer
+  - name: unzip -o {{ source_file }} -d /usr/local/packer
   - unless: test -e /usr/local/packer/packer
   - require:
     - pkg: packer_packages
