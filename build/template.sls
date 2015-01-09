@@ -4,11 +4,11 @@
 include:
 - packer.build.service
 
-{%- for name, template in build.template.iteritems() %}
+{%- for template_name, template in build.template.iteritems() %}
 {{ template.source.address }}:
   git.latest:
-  - target: /srv/packer/templates/{{ name }}
-  - rev: {{ template.source.branch }}
+  - target: /srv/packer/templates/{{ template_name }}
+  - rev: {{ template.source.revision }}
   - require:
     - file: /srv/packer/templates
   - require_in:

@@ -1,5 +1,5 @@
 
-# Packer.io
+# Packer
 
 Packer is an open source tool for creating identical machine images for multiple platforms from a single source configuration. Packer is lightweight, runs on every major operating system, and is highly performant, creating machine images for multiple platforms in parallel. 
 
@@ -10,12 +10,23 @@ Packer is an open source tool for creating identical machine images for multiple
     packer:
       builder:
         enabled: true
-        version: 0.3.10
+        version: 0.7.5
         template:
           someos:
-            source: git
-            address: 'git@repo.domain.com:packer/someos.git'
-            branch: 'master'
+            source:
+              engine: git
+              address: 'git@repo.domain.com:packer/someos.git'
+              revision: 'master'
+            image:
+              ubuntu1404:
+                provisioner: salt
+
+
+openstack image prepare guide
+nainstalovat cloud-init - pridat epel - balik epel-centos 6, yum cloud-init
+nastavit na sitovku dhcp
+/etc/udev.rules/70netrules - odeberou se zaznamy s mac adresama
+
 
 ## Usage
 
@@ -25,7 +36,7 @@ Build plain image
 
 Build image with Salt provisioner
 
-    packer build -var 'provisioner=salt' ubuntu1404.json
+    packer build -var 'provisioner=salt' -var 'builder=virtualbox' ubuntu1404.json
 
 Build image with Puppet provisioner
 

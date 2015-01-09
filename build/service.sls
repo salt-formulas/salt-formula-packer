@@ -1,7 +1,7 @@
 {%- from "packer/map.jinja" import build with context %}
 {%- if build.enabled %}
 
-{% set source_file = build.version+'_'+grains.kernel|lower+'_'+ grains.osarch+'.zip' %}
+{% set source_file = 'packer_'+build.version+'_'+grains.kernel|lower+'_'+ grains.osarch+'.zip' %}
 
 {% if grains.kernel == "Linux" %}
 
@@ -34,7 +34,7 @@ packer_packages:
 
 {% endif %}
 
-{% if pillar.workstation is defined %}
+{% if pillar.vmware_workstation is defined %}
 
 /srv/packer/vmware:
   file.directory:
