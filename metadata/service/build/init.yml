@@ -1,0 +1,6 @@
+applications:
+- packer
+parameters:
+  packer:
+    build:
+      enabled: true
