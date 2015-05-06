@@ -13,44 +13,35 @@ Basic linux distros
 .. code-block:: yaml
 
     packer:
-      builder:
-        enabled: true
-        version: 0.7.5
-        template:
-          someos:
+      build:
+        system:
+          ubuntu:
             source:
               engine: git
-              address: 'git@repo.domain.com:packer/someos.git'
-              revision: 'master'
-            image:
-              ubuntu1404:
+              address: https://github.com/boxcutter/ubuntu.git
+              revision: master
+            template:
+              ubuntu1404-salt:
+                file: ubuntu1404.json
                 provisioner: salt
+                builders:
+                - vmware
+                - virtualbox
+              ubuntu1504-desktop-salt:
+                file: ubuntu1504-desktop.json
+                provisioner: salt
+                builders:
+                - vmware
+                - virtualbox
 
 Usage
 =====
 
-openstack image prepare guide
-nainstalovat cloud-init - pridat epel - balik epel-centos 6, yum cloud-init
-nastavit na sitovku dhcp
-/etc/udev.rules/70netrules - odeberou se zaznamy s mac adresama
+Openstack image prepare guide
 
-Build plain image
-
-.. code-block:: bash
-
-    packer build ubuntu1404.json
-
-Build image with Salt provisioner
-
-.. code-block:: bash
-
-    packer build -var 'provisioner=salt' -var 'builder=virtualbox' ubuntu1404.json
-
-Build image with Puppet provisioner
-
-.. code-block:: bash
-
-    packer build -var 'provisioner=puppet' ubuntu1404.json
+* Install cloud-init - add epel - package epel-centos 6, yum cloud-init
+* Set network to DHCP
+* /etc/udev.rules/70netrules - remove MAC address records
 
 Read more
 =========
