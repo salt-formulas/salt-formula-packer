@@ -8,8 +8,8 @@
 
 cd /srv/packer/templates/{{ system_name }}
 
-packer build -only={{ builder }}-iso -var 'iso_path=/srv/packer/iso' -var 'cm={{ template.provisioner }}' -var 'version=current' {{ template.file }}.json
+packer build -only={{ builder }}-iso -var 'iso_path=/srv/packer/iso' -var 'cm={{ template.provisioner }}' -var 'version=current' {{ template.file }}
 
-mv box/{{ builder }}-iso/ubuntu1404-{{user `cm`}}{{user `cm_version`}}-current.box
+mv ./box/{{ builder }}/{{ template.file|split('.')[0] }}-{{ provisioner }}-current.box /srv/packer/build/{{ builder }}
 
 cd /srv/packer/build/scripts
