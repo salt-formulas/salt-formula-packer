@@ -15,7 +15,6 @@ packer_packages:
 
 /srv/packer/templates:
   file.directory:
-  - mode: 0777
   - require:
     - file: /srv/packer
 
@@ -24,11 +23,17 @@ packer_packages:
   - require:
     - file: /srv/packer
 
+/srv/packer/build/scripts:
+  file.directory:
+  - makedirs: true
+  - require:
+    - file: /srv/packer
+
 {% if pillar.virtualbox is defined %}
 
-/srv/packer/virtualbox:
+/srv/packer/build/virtualbox:
   file.directory:
-  - mode: 0777
+  - makedirs: true
   - require:
     - file: /srv/packer
 
@@ -36,9 +41,9 @@ packer_packages:
 
 {% if pillar.vmware_workstation is defined %}
 
-/srv/packer/vmware:
+/srv/packer/build/vmware:
   file.directory:
-  - mode: 0777
+  - makedirs: true
   - require:
     - file: /srv/packer
 
