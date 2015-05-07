@@ -8,11 +8,10 @@
 
 cd /srv/packer/templates/{{ system_name }}
 
-TODAY=$(date +"%Y%m%d")
-RELEASE=1
+RELEASE=$(date +"%Y%m%d_1")
 
-packer build -only={{ builder }}-iso -var 'iso_path=/srv/packer/iso' -var 'cm={{ template.provisioner }}' -var 'version=$TODAY_$RELEASE' {{ template.file }}
+packer build -only={{ builder }}-iso -var 'iso_path=/srv/packer/iso' -var 'cm={{ template.provisioner }}' -var 'version=$RELEASE' {{ template.file }}
 
-mv ./box/{{ builder }}/{{ template.file.split('.')[0] }}-{{ provisioner }}-$TODAY_$RELEASE.box /srv/packer/build/{{ builder }}
+mv ./box/{{ builder }}/{{ template.file.split('.')[0] }}-{{ provisioner }}-$RELEASE.box /srv/packer/build/{{ builder }}
 
 cd /srv/packer/build/scripts
