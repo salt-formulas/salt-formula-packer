@@ -5,34 +5,39 @@
 
 {% if grains.kernel == "Linux" %}
 
-packer_packages:
+Install Unzip:
   pkg.installed:
   - names:
     - unzip
 
-/srv/packer:
-  file.directory
-
-/srv/packer/templates:
+Create Initial Packer Directory:
   file.directory:
+    - name: /srv/packer
+
+Create Template Directory:
+  file.directory:
+  - name: /srv/packer/templates
   - require:
     - file: /srv/packer
 
-/srv/packer/iso:
+Create ISO Directory:
   file.directory:
+  - name: /srv/packer/iso
   - require:
     - file: /srv/packer
 
-/srv/packer/build/scripts:
+Create Packer build Scripts Director:
   file.directory:
+  - name: /srv/packer/build/scripts
   - makedirs: true
   - require:
     - file: /srv/packer
 
 {% if pillar.virtualbox is defined %}
 
-/srv/packer/build/virtualbox:
+ Create Virtualbox Build Directory:
   file.directory:
+  - name : /srv/packer/build/virtualbox
   - makedirs: true
   - require:
     - file: /srv/packer
@@ -41,31 +46,33 @@ packer_packages:
 
 {% if pillar.vmware_workstation is defined %}
 
-/srv/packer/build/vmware:
+Create VMware Workstation Build Directory:
   file.directory:
+  - name: /srv/packer/build/vmware
   - makedirs: true
   - require:
     - file: /srv/packer
 
 {% endif %}
 
-/usr/local/packer:
-  file.directory
+Create Packer Binary folder:
+  file.directory:
+    - name: /usr/local/packer
 
-packer_download_package:
+Download Packer Binary:
   cmd.run:
   - name: wget {{ build.source_url }}/{{ source_file }}
   - unless: test -e /root/{{ source_file }}
   - cwd: /root
 
-packer_unzip_package:
+Unzip Packer binary:
   cmd.run:
   - name: unzip -o {{ source_file }} -d /usr/local/packer
   - unless: test -e /usr/local/packer/packer
   - require:
-    - pkg: packer_packages
+    - pkg: Install Unzip
     - file: /usr/local/packer
-    - cmd: packer_download_package
+    - cmd: Download Packer Binary
 
 {%- for binary in build.binaries %}
 
@@ -73,7 +80,7 @@ packer_unzip_package:
   file.symlink:
   - target: /usr/local/packer/{{ binary }}
   - require:
-    - cmd: packer_unzip_package
+    - cmd: Unzip Packer binary
 
 {%- endfor %}
 
