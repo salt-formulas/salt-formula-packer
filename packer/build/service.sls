@@ -7,8 +7,7 @@
 
 Install Unzip:
   pkg.installed:
-  - names:
-    - unzip
+    - name: unzip
 
 Create Initial Packer Directory:
   file.directory:
@@ -16,31 +15,31 @@ Create Initial Packer Directory:
 
 Create Template Directory:
   file.directory:
-  - name: /srv/packer/templates
-  - require:
-    - file: /srv/packer
+    - name: /srv/packer/templates
+    - require:
+      - file: /srv/packer
 
 Create ISO Directory:
   file.directory:
-  - name: /srv/packer/iso
-  - require:
-    - file: /srv/packer
+    - name: /srv/packer/iso
+    - require:
+      - file: /srv/packer
 
 Create Packer build Scripts Director:
   file.directory:
-  - name: /srv/packer/build/scripts
-  - makedirs: true
-  - require:
-    - file: /srv/packer
+    - name: /srv/packer/build/scripts
+    - makedirs: true
+    - require:
+      - file: /srv/packer
 
 {% if pillar.virtualbox is defined %}
 
  Create Virtualbox Build Directory:
   file.directory:
-  - name : /srv/packer/build/virtualbox
-  - makedirs: true
-  - require:
-    - file: /srv/packer
+    - name : /srv/packer/build/virtualbox
+    - makedirs: true
+    - require:
+      - file: /srv/packer
 
 {% endif %}
 
@@ -48,10 +47,10 @@ Create Packer build Scripts Director:
 
 Create VMware Workstation Build Directory:
   file.directory:
-  - name: /srv/packer/build/vmware
-  - makedirs: true
-  - require:
-    - file: /srv/packer
+    - name: /srv/packer/build/vmware
+    - makedirs: true
+    - require:
+      - file: /srv/packer
 
 {% endif %}
 
@@ -61,26 +60,26 @@ Create Packer Binary folder:
 
 Download Packer Binary:
   cmd.run:
-  - name: wget {{ build.source_url }}/{{ source_file }}
-  - unless: test -e /root/{{ source_file }}
-  - cwd: /root
+    - name: wget {{ build.source_url }}/{{ source_file }}
+    - unless: test -e /root/{{ source_file }}
+    - cwd: /root
 
 Unzip Packer binary:
   cmd.run:
-  - name: unzip -o {{ source_file }} -d /usr/local/packer
-  - unless: test -e /usr/local/packer/packer
-  - require:
-    - pkg: Install Unzip
-    - file: /usr/local/packer
-    - cmd: Download Packer Binary
+    - name: unzip -o {{ source_file }} -d /usr/local/packer
+    - unless: test -e /usr/local/packer/packer
+    - require:
+      - pkg: Install Unzip
+      - file: /usr/local/packer
+      - cmd: Download Packer Binary
 
 {%- for binary in build.binaries %}
 
 /usr/bin/{{ binary }}:
   file.symlink:
-  - target: /usr/local/packer/{{ binary }}
-  - require:
-    - cmd: Unzip Packer binary
+    - target: /usr/local/packer/{{ binary }}
+    - require:
+      - cmd: Unzip Packer binary
 
 {%- endfor %}
 
@@ -88,7 +87,7 @@ Unzip Packer binary:
 
 packer_install_package:
   pkg.installed:
-  - name: packer_x64_en
+    - name: packer_x64_en
 
 {%- endif %}
 
