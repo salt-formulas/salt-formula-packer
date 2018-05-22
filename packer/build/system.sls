@@ -6,7 +6,7 @@ include:
 
 {%- for system_name, system in build.system.iteritems() %}
 
-packer_system_{{ system_name }}:
+Running Packer {{ system_name }} Build:
   git.latest:
   - name: {{ system.source.address }}
   - target: /srv/packer/templates/{{ system_name }}
